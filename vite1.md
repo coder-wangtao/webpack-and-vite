@@ -75,3 +75,14 @@ ES6 Module 也被称作 ES Module (或 ESM )， 是由 ECMAScript 官方提出�
 4.Vite 会将项目的源代码编译成浏览器可以识别的代码，与此同时，一个 import 语句即代表了一个 HTTP 请求。Vite Dev Server 会读取本地文件，返回浏览器可以解析的代码。当浏览器解析到新的 import 语句，又会发出新的请求，以此类推，直到所有的资源都加载完成。
 
 5.在开发阶段 Vite 通过 Dev Server 实现了不打包的特性，而在生产环境中，Vite 依然会基于Rollup 进行打包，并采取一系列的打包优化手段。
+
+6.vite开发规范
+6.1JavaScript/TypeScript 规范。主流的 Lint 工具包括 Eslint 、 Prettier ；
+6.2样式开发规范。主流的 Lint 工具包括 Stylelint 、 Prettier ；
+6.3Git 提交规范。主流的 Lint 工具包括 Commitlint 。
+6.4我们可以通过编辑器的插件或者 Vite 插件在开发阶段暴露出规范问题，但也无法保证这类问题在开发时完全被解决掉，因此我们尝试在代码提交阶段来解决这个问题，通过Husky + lint-staged 成功地拦截 git commit 过程，只有在各项 Lint 检查通过后才能正常提交代码，这样就有效提高了线上代码和 Git 提交信息的质量。
+
+7.vite生产打包静态资源
+7.1 如果静态资源体积 >= 4KB，则提取成单独的文件。如果静态资源体积 < 4KB，则作为 base64 格式的字符串内联。
+7.2 图片压缩imagemin
+7.3 雪碧图优化(虽然 svg 文件一般体积不大，但 Vite 中对于 svg 文件会始终打包成单文件，大量的图标引入之后会导致网络请求增加，大量的 HTTP 请求会导致网络解析耗时变长，页面加载性能直接受到影响。),合并图标的方案也叫 雪碧图,我们可以通过 vite-plugin-svg-icons来实现这个方案。
