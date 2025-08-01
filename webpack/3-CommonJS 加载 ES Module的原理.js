@@ -10,6 +10,7 @@ var modules = {
   },
 };
 var cache = {};
+
 function require(moduleId) {
   var cachedModule = cache[moduleId];
   if (cachedModule !== undefined) {
