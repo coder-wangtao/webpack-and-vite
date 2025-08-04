@@ -1,4 +1,5 @@
-let AsyncQueue = require("../../webpack-project/node_modules/webpack/lib/util/AsyncQueue");
+// let AsyncQueue = require("../../webpack-project/node_modules/webpack/lib/util/AsyncQueue");
+let AsyncQueue = require("../myAsyncQueue/AsyncQueue");
 
 let queue = new AsyncQueue({
   name: "调度器",
@@ -23,5 +24,9 @@ queue.add({ key: "task2" }, function (err, result) {
 });
 
 queue.add({ key: "task3" }, function (err, result) {
+  console.log(result);
+});
+
+queue.add({ key: "task1" }, function (err, result) {
   console.log(result);
 });

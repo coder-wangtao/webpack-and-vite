@@ -1,4 +1,5 @@
-const author = "不要秃头啊";
+console.log(this === exports);
+console.log(exports === module.exports);
 
-export const age = "18";
-export default author;
+exports.name = "不要秃头啊";
+exports.age = "18";

@@ -1,4 +1,2 @@
-import author, { age } from "./name";
-
-console.log(author, "author");
-console.log(age, "age");
+const { name, age } = require("./name");
+console.log(name, age);
