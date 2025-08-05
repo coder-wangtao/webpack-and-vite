@@ -4,7 +4,7 @@ const AsyncQueueEntry = require("./AsyncQueueEntry");
 const QUEUE_STATE = 0;
 const PROCESSING_STATE = 1;
 const DONE_STATE = 3;
-
+//process.nextTick执行时机高于setImmediate
 class AsyncQueue {
   constructor(options) {
     this.name = options.name;
@@ -50,6 +50,7 @@ class AsyncQueue {
     }
     this._willEnsureProcessing = false;
   }
+
   _startProcess(entry) {
     this.processor(entry.item, (e, r) => {
       this._handleResult(entry, e, r);
