@@ -1,4 +1,5 @@
-let SyncHook = require("../../../webpack-project/node_modules/tapable/lib/SyncHook");
+// let SyncHook = require("../../../webpack-project/node_modules/tapable/lib/SyncHook");
+let SyncHook = require("../../myTapable/index");
 
 let hook = new SyncHook(["arg"]);
 
