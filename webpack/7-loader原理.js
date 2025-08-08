@@ -97,6 +97,7 @@ module.exports = ALoader;
     ]
 }
 // 这些 loader 的执行顺序是什么样的？
+// 6.Loader 为什么是自右向左执行的？如何做到的？
 //4.5.1Webpack 内部先会对 loader 的类型进行分类，先找出各个类型的 loader，比如该例子：
 // post类型loader
 const postLoaders = ["b-loader", "d-loader"];
@@ -114,6 +115,7 @@ let loaders = [
   ...preLoaders,
 ];
 // 结果为: ['b-loader', 'd-loader', 'e-loader', 'f-loader', 'a-loader', 'c-loader']
+//
 // 这个时候再去理解它的执行顺序就是：
 // b-loader 的 pitch 阶段 -> 
 // d-loader 的 pitch 阶段 -> 
@@ -166,9 +168,30 @@ import test from "!!c-loader!./test.js";
 import test from "-!c-loader!./test.js";
 // 使用 -! 前缀，将禁用所有已配置的 preLoader 和 loader，但是不禁用 postLoaders，也就是不要 pre 和 normal loader：
 
+// 在 Pitch 阶段，如果执行到该 Loader 的 pitch 属性函数时有返回值，就直接结束 Pitch阶段，
+// 并直接跳到该Loader pitch 阶段的前一个 Loader 的 normal 阶段继续执行（若无前置Loader，则直接返回）
 
-// 6.Loader 为什么是自右向左执行的？如何做到的？
 // 7.项目中对.css、.less、.scss、.tsx、.vue等文件是如何做解析的？它们的原理是什么？
+//7.1譬如处理js 用的babel-loader -> babel-loader直接去调用babel库的方法(譬如transform)，转成字符传返回出去
+//7.2譬如处理less，用的是less-loader、css-loader、style-loader。
+//less-loader 实现思路：调用 less 库将 .less源代码转换为 .css 文件即可。
+//css-loader 核心会做两件事：解析@import语法、解析url中的路径，返回
+//style-loader:会接收 css-loader 返回的代码，它需要返回一段js。实现思路：创建一个 style 标签，将css代码添加到 head 中去。
+//见外面图片(webpack处理less文件)
+
+
+
+
 // 8.Webpack 中完整的 Loader 运行机制是怎么样的？
+见外面图片
 // 9.为什么最后的 Loader 处理结果必须是JS类型的字符串？
+// 一般loader里拿到的source都是字符串，但是如果要加载一些图片字体之类的，它需要接收一个buffer，
+// 此函数的目的是根据 raw 的值，处理 args 数组中第一个元素的类型转换，具体转换规则是字符串与 Buffer 之间的相互转换。
+
+
 // 10.给你个需求：需要在打包过程中移除console.log函数，你会通过哪种方式进行处理？是通过 Loader 还是 Babel Plugin？再或者是 Webpack Plugin？给出你的理由
+// 三种方式都可以做到，但最好的方式是写一个babel插件，理由如下：
+// 如果在loader中做的话，就需要每次在调用 loader 的时候去解析和处理AST，这一步是非常耗费性能的。在loader处理完文件之后webpack后续还是会解析和处理AST，相当于解析了两遍。而且loader更适合处理文件加载和转换。
+// Webpack插件一般用于执行与模块加载和打包相关的操作，而不是对代码语法进行精确的修改。因此，对于这种任务，Webpack插件可能会显得过于繁琐。
+// 而 Babel 的插件可以直接对生成的AST进行处理，没有繁琐的步骤，它也是专门用来做这种事情的。
+// 总结一下就是： Babel插件可以更加精确地针对JavaScript语法进行处理，而Webpack Loader主要用于处理模块，而不是语法层面的操作。Webpack插件通常用于执行整个构建过程中的一些操作，但它们并不是专门设计用于处理JavaScript语法的。
