@@ -39,7 +39,8 @@ class NormalModule {
     async,
   }) {
     this.name = name;
-    this.context = context;
+    this.context =
+      "D:\\project\\webpack-and-vite\\webpack\\webpack原理\\webpack2";
     this.rawRequest = rawRequest;
     this.resource = resource;
     this.parser = parser; //这是一个AST解析器 可以把源代码转成AST抽象语法树
@@ -189,7 +190,13 @@ class NormalModule {
       }
       //loader的绝对路径的数组
       loaders = loaders.map((loader) =>
-        require.resolve(path.posix.join(this.context, "loaders", loader))
+        require.resolve(
+          path.posix.join(
+            "D:\\project\\webpack-and-vite\\webpack\\webpack原理\\webpack2",
+            "loaders",
+            loader
+          )
+        )
       );
 
       runLoaders(

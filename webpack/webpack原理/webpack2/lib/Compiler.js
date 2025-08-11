@@ -30,7 +30,6 @@ class Compiler {
 
   emitAssets(compilation, callback) {
     let outputPath = this.options.output.path; //dist
-    console.log(outputPath, "outputPath");
     //把chunk变成文件，写入硬盘
     const emitFiles = (err) => {
       const assets = compilation.assets;

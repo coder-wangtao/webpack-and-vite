@@ -18,6 +18,13 @@
   "homepage": "https://github.com/noBaldAaa/hand-webpack#readme",
   "dependencies": {
     "@babel/core": "^7.20.2",
+    "babel-generator": "^6.26.1",
+    "babel-traverse": "^6.26.0",
+    "babel-types": "^6.26.0",
+    "ejs": "^3.1.10",
+    "mkdirp": "^3.0.1",
+    "neo-async": "^2.6.2",
+    "path": "^0.12.7",
     "tapable": "^2.2.1",
     "webpack": "^5.75.0"
   }
